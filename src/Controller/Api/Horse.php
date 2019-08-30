@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use JMS\Serializer\SerializerInterface;
 use JMS\Serializer\Serializer;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 use App\Api\Horse as HorseApiService;
 use App\Model\Response\HorseCollection;
 use App\Model\Horse as HorseModel;
@@ -41,6 +44,26 @@ class Horse extends AbstractController
      *     name="api_horses_get_one"
      * )
      *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns details of one horse",
+     *     @Model(type=\App\Model\Response\HorseCollection::class)
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Horse with given ID not found",
+     *     @Model(type=\App\Model\Response\BadRequest::class)
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="string",
+     *     description="ID of the horse to fetch"
+     * )
+     * @SWG\Tag(name="horses-api")
+     *
      * @param string $id
      * @param HorseApiService $horseApi
      * @return JsonResponse
@@ -64,7 +87,14 @@ class Horse extends AbstractController
      *     name="api_horses_get_all"
      * )
      *
-     * @param string $id
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns details of all horses",
+     *     @Model(type=\App\Model\Response\HorseCollection::class)
+     *     )
+     * )
+     * @SWG\Tag(name="horses-api")
+     *
      * @param HorseApiService $horseApi
      * @return JsonResponse
      */
@@ -87,6 +117,26 @@ class Horse extends AbstractController
      *     methods={"POST"},
      *     name="api_horses_add"
      * )
+     *
+     * @SWG\Response(
+     *     response=201,
+     *     description="Adds another horse",
+     *     @Model(type=\App\Model\Response\SimpleStatus::class)
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Validation and other errors",
+     *     @Model(type=\App\Model\Response\BadRequest::class)
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="data",
+     *     in="body",
+     *     @Model(type=\App\Model\Horse::class),
+     *     description="Data of the horse to add"
+     * )
+     * @SWG\Tag(name="horses-api")
      *
      * @param Request $request
      * @param HorseApiService $horseApi

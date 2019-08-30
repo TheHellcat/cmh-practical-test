@@ -5,6 +5,7 @@ namespace App\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use Swagger\Annotations as SWG;
 use App\Entity\Horse as HorseEntity;
 
 /**
@@ -17,6 +18,8 @@ class Horse
      * @Serializer\SerializedName("id")
      * @Serializer\Type("string")
      *
+     * @SWG\Property(description="Unique ID of the entry - IGNORED for add requests")
+     *
      * @var string
      */
     private $id;
@@ -24,6 +27,8 @@ class Horse
     /**
      * @Serializer\SerializedName("name")
      * @Serializer\Type("string")
+     *
+     * @SWG\Property(description="Name of the Horse (can not be empty)")
      *
      * @Assert\NotBlank
      *
@@ -34,6 +39,8 @@ class Horse
     /**
      * @Serializer\SerializedName("picture")
      * @Serializer\Type("string")
+     *
+     * @SWG\Property(description="URL to picture of the horse (can be empty, must be valid URL if given)")
      *
      * @Assert\Url(
      *     protocols = {"http", "https"}
