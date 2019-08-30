@@ -11,6 +11,7 @@ use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerInterface;
 use App\Model\Response\BadRequest;
 use App\Exception\NotFoundException;
+use App\Exception\AuthenticationException;
 
 /**
  * Class ExceptionHandler
@@ -55,6 +56,10 @@ class ExceptionHandler implements EventSubscriberInterface
         if ($exception instanceof NotFoundException) {
             $statusCode = 404;
             $statusText = 'not found';
+        }
+        if ($exception instanceof AuthenticationException) {
+            $statusCode = 401;
+            $statusText = 'not authenticated';
         }
 
         $responseModel = new BadRequest();
