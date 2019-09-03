@@ -36,12 +36,12 @@ class HorseTest extends WebTestCase
         $this->assertEquals('not authenticated', $responseContent->status);
 
         // test for proper "auth error" with invalid auth token
-        $client->request('GET', '/horses', [], [], ['HTTP_X_API_Token'=>'INVALIDTOKEN']);
+        $client->request('GET', '/horses', [], [], ['HTTP_X_API_Token' => 'INVALIDTOKEN']);
         $responseContent = json_decode($client->getResponse()->getContent());
         $this->assertEquals('not authenticated', $responseContent->status);
 
         // test if can properly call the "get all" endpoint
-        $client->request('GET', '/horses', [], [], ['HTTP_X_API_Token'=>'TEST00000']);
+        $client->request('GET', '/horses', [], [], ['HTTP_X_API_Token' => 'TEST00000']);
         $responseContent = json_decode($client->getResponse()->getContent());
         $this->assertEquals('ok', $responseContent->status);
         $this->assertEquals(5, count($responseContent->horses));
@@ -62,18 +62,18 @@ class HorseTest extends WebTestCase
         $this->assertEquals('not authenticated', $responseContent->status);
 
         // test if can properly call the "add horse" endpoint
-        $client->request('POST', '/horses', [], [], ['HTTP_X_API_Token'=>'TEST00000'], '{"name":"Testhorse 5","picture":"http://test.tst/test5.jpg"}');
+        $client->request('POST', '/horses', [], [], ['HTTP_X_API_Token' => 'TEST00000'], '{"name":"Testhorse 5","picture":"http://test.tst/test5.jpg"}');
         $responseContent = json_decode($client->getResponse()->getContent());
         $this->assertEquals('success', $responseContent->status);
         $this->assertEquals('Entry added', $responseContent->message);
 
         // check we actually have one horse more in the DB now
-        $client->request('GET', '/horses', [], [], ['HTTP_X_API_Token'=>'TEST00000']);
+        $client->request('GET', '/horses', [], [], ['HTTP_X_API_Token' => 'TEST00000']);
         $responseContent = json_decode($client->getResponse()->getContent());
         $this->assertEquals(6, count($responseContent->horses));
 
         // test if invalid JSON is handled properly
-        $client->request('POST', '/horses', [], [], ['HTTP_X_API_Token'=>'TEST00000'], '{"name""Testhorse 6","picture""http://test.tst/test6.jpg"}');
+        $client->request('POST', '/horses', [], [], ['HTTP_X_API_Token' => 'TEST00000'], '{"name""Testhorse 6","picture""http://test.tst/test6.jpg"}');
         $responseContent = json_decode($client->getResponse()->getContent());
         $this->assertEquals('error', $responseContent->status);
         $this->assertContains('malformed JSON', $responseContent->message);
