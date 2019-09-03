@@ -69,6 +69,18 @@ All API endpoints are listed with brief documentations and can be tested/execute
 **You need to first click the *AUTHORIZE* button and enter an API key, or the API calls will fail due to missing authentication**.  
 After entering an API token you can "on the fly" try out all endpoints.
 
+### Running the Unit Tests
+
+From the console, inside the project directory, just run:
+
+      php bin/phpunit
+
+The tests are located in .../tests inside the projects folder and mirror the structure of the the .../src folder which makes it easy to locate individual tests for specific classes.
+
+**Additional Info:** The unit tests use two different strategies of testing database accessing functions:
+- The API service tests use mocking the entity repository to simulate database communication completely inside the test class
+- The controller tests use a SQLite database in the local filesystem, initialized with data fixtures to test the API calls of proper functionality
+
 ### Exception Handling
 
 The application has a global exception handler that takes care to always return a proper, processable JSON response in any event of something going wrong,

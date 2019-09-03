@@ -10,8 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerInterface;
 use App\Model\Response\BadRequest;
-use App\Exception\NotFoundException;
-use App\Exception\AuthenticationException;
+use App\Exception\AppExceptionInterface;
 
 /**
  * Class ExceptionHandler
@@ -35,7 +34,7 @@ class ExceptionHandler implements EventSubscriberInterface
     }
 
     /**
-     * Horse constructor.
+     * ExceptionHandler constructor.
      * @param SerializerInterface $serializer
      */
     public function __construct(SerializerInterface $serializer)
@@ -53,13 +52,9 @@ class ExceptionHandler implements EventSubscriberInterface
 
         $exception = $event->getException();
 
-        if ($exception instanceof NotFoundException) {
-            $statusCode = 404;
-            $statusText = 'not found';
-        }
-        if ($exception instanceof AuthenticationException) {
-            $statusCode = 401;
-            $statusText = 'not authenticated';
+        if ($exception instanceof AppExceptionInterface) {
+            $statusCode = $exception->getStatusCode();
+            $statusText = $exception->getStatusMessage();
         }
 
         $responseModel = new BadRequest();
