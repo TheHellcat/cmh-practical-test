@@ -1,0 +1,8 @@
+jms_serializer:
+    visitors:
+        xml:
+            format_output: '%kernel.debug%'
+        json:
+            options:
+                - JSON_PRETTY_PRINT
+                - JSON_UNESCAPED_SLASHES
